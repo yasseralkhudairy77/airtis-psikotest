@@ -455,7 +455,10 @@
     </div>
   </div>
 
-<script>
+<script type="module">
+import { submitAssessmentResult } from "./assets/js/core/api.js";
+import { buildKraepelinPayload } from "./assets/js/core/payloads.js";
+
 (() => {
   function xmur3(str) {
     let h = 1779033703 ^ str.length;
@@ -500,6 +503,7 @@
   const participantInput = el("participant");
   const minuteChartEl = el("minuteChart");
   const minuteMetaEl = el("minuteMeta");
+  let startedAtIso = null;
 
   const keypad = el("keypad");
   const FIXED_TOTAL_SECONDS = 1800;
@@ -650,6 +654,7 @@
     initMinuteStats();
     running = true;
     paused = false;
+    startedAtIso = new Date().toISOString();
 
     setFeedback("Tes dimulai.", "good");
     enableControls();
@@ -659,7 +664,42 @@
     renderMinuteChart();
   }
 
-  function stop(reason = "Selesai") {
+  async function sendToGoogleSheet(reason = "Selesai") {
+    if (!attempts.length) return;
+
+    const payload = {
+      meta: {
+        startedAt: startedAtIso,
+        finishedAt: new Date().toISOString(),
+        reason
+      },
+      scoring: {
+        correct: score,
+        wrong,
+        totalAttempts: attempts.length,
+        lastColumn: colIndex
+      },
+      participant: (participantInput.value || "").trim(),
+      seed: (seedInput.value || "").trim(),
+      attempts,
+      minuteStats
+    };
+
+    const session = JSON.parse(localStorage.getItem("HRRS_SESSION") || "null") || {};
+    return submitAssessmentResult(buildKraepelinPayload({
+      session: {
+        ...session,
+        token: session.token || (seedInput.value || "").trim(),
+        candidate: {
+          ...(session.candidate || {}),
+          name: (participantInput.value || "").trim()
+        }
+      },
+      payload
+    }));
+  }
+
+  async function stop(reason = "Selesai") {
     running = false;
     paused = false;
     if (timer) clearInterval(timer);
@@ -669,6 +709,14 @@
     renderMinuteChart();
     enableControls();
     csvBtn.disabled = attempts.length === 0;
+
+    try {
+      await sendToGoogleSheet(reason);
+      setFeedback(reason + ". Hasil juga berhasil dikirim ke Google Sheet.", "good");
+    } catch (error) {
+      setFeedback(reason + ". Tes selesai, tapi kirim ke Google Sheet gagal.", "bad");
+      console.warn("Gagal kirim hasil Kraepelin", error);
+    }
   }
 
   function togglePause() {
@@ -693,7 +741,7 @@
 
     if (totalLeft <= 0) {
       updateHUD();
-      stop("Waktu habis");
+      void stop("Waktu habis");
       return;
     }
 
@@ -802,7 +850,7 @@
 
   startBtn.addEventListener("click", start);
   pauseBtn.addEventListener("click", togglePause);
-  stopBtn.addEventListener("click", () => stop("Tes dihentikan"));
+  stopBtn.addEventListener("click", () => { void stop("Tes dihentikan"); });
   csvBtn.addEventListener("click", downloadCSV);
 
   document.addEventListener("keydown", (e) => {

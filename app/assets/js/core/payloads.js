@@ -55,8 +55,69 @@ function buildSummary(testId, result){
     return { scoreSummary, interpretationSummary };
   }
 
+  if(testId === "iq"){
+    const scoring = result?.scoring || {};
+    return {
+      scoreSummary: `score=${scoring.score ?? 0} / ${scoring.maxScore ?? 0} | correct=${scoring.correctCount ?? 0}`,
+      interpretationSummary: `Section aktif terakhir: ${result?.activeSection || "-"}`
+    };
+  }
+
+  if(testId === "kraepelin"){
+    const scoring = result?.scoring || {};
+    return {
+      scoreSummary: [
+        `correct=${scoring.correct ?? 0}`,
+        `wrong=${scoring.wrong ?? 0}`,
+        `attempts=${scoring.totalAttempts ?? 0}`,
+        `columns=${scoring.lastColumn ?? 0}`
+      ].join(" | "),
+      interpretationSummary: `Peserta menyelesaikan hingga kolom ${scoring.lastColumn ?? 0}`
+    };
+  }
+
   return {
     scoreSummary: "",
     interpretationSummary: ""
   };
+}
+
+export function buildIqPayload({ session, payload }){
+  return buildAssessmentPayload({
+    session: {
+      ...session,
+      assessment: {
+        testId: "iq",
+        startedAt: payload?.meta?.startedAt || null,
+        finishedAt: payload?.meta?.finishedAt || null
+      }
+    },
+    result: payload,
+    manifest: {
+      id: "iq",
+      name: "IQ / IST",
+      version: "1.0.0"
+    },
+    testId: "iq"
+  });
+}
+
+export function buildKraepelinPayload({ session, payload }){
+  return buildAssessmentPayload({
+    session: {
+      ...session,
+      assessment: {
+        testId: "kraepelin",
+        startedAt: payload?.meta?.startedAt || null,
+        finishedAt: payload?.meta?.finishedAt || null
+      }
+    },
+    result: payload,
+    manifest: {
+      id: "kraepelin",
+      name: "Pauli Kraepelin",
+      version: "1.0.0"
+    },
+    testId: "kraepelin"
+  });
 }

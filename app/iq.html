@@ -301,9 +301,11 @@
       </div>
       <div class="btn-row">
         <button class="primary" id="saveMetaBtn">Simpan</button>
+        <button class="primary" id="submitSheetBtn" type="button">Kirim ke Google Sheet</button>
         <button class="ghost" id="exportBtn">Export JSON</button>
         <button class="ghost" id="resetBtn">Reset</button>
       </div>
+      <p class="note" id="sheetStatus" style="margin-top:10px;"></p>
       <h3 style="margin-top:22px;">Section IST</h3>
       <div class="section-list" id="sectionList"></div>
     </aside>
@@ -321,7 +323,10 @@
       </section>
     </main>
   </div>
-  <script>
+  <script type="module">
+    import { submitAssessmentResult } from "./assets/js/core/api.js";
+    import { buildIqPayload } from "./assets/js/core/payloads.js";
+
     const STORAGE_KEY = "ist_amthauer_html_v1";
     const DATA = {
       title: "IST Amthauer",
@@ -548,7 +553,8 @@
     const state = {
       participant: { name: "", code: "", note: "" },
       activeSection: "SE",
-      answers: {}
+      answers: {},
+      meta: { startedAt: null, finishedAt: null, submittedAt: null, sync: null }
     };
     const ANSWER_KEY = {
       "SE-1": 4, "SE-2": 2, "SE-3": 3, "SE-4": 3, "SE-5": 3,
@@ -622,6 +628,7 @@
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
       renderStats();
       renderExportPreview();
+      renderSyncStatus();
     }
 
     function answerKey(sectionId, itemNo) {
@@ -826,6 +833,7 @@
         participant: state.participant,
         activeSection: state.activeSection,
         answers: state.answers,
+        meta: state.meta,
         scoring: {
           score: evaluation.score,
           maxScore: evaluation.maxScore,
@@ -842,6 +850,7 @@
         exportedAt: new Date().toISOString(),
         participant: state.participant,
         answers: state.answers,
+        meta: state.meta,
         scoring: {
           score: evaluation.score,
           maxScore: evaluation.maxScore,
@@ -855,6 +864,86 @@
       anchor.download = "ist-amthauer-answers.json";
       anchor.click();
       URL.revokeObjectURL(url);
+    }
+
+    function renderSyncStatus() {
+      const sync = state.meta.sync;
+      const node = $("sheetStatus");
+      if (!node) return;
+      if (!sync) {
+        node.textContent = "Belum dikirim ke Google Sheet.";
+        node.className = "note";
+        return;
+      }
+      if (sync.status === "success") {
+        node.textContent = "Berhasil dikirim ke Google Sheet.";
+        node.className = "note";
+        return;
+      }
+      if (sync.status === "failed") {
+        node.textContent = "Gagal kirim ke Google Sheet: " + (sync.message || "unknown error");
+        node.className = "note warning";
+        return;
+      }
+      node.textContent = "Status sinkronisasi: " + sync.status;
+      node.className = "note";
+    }
+
+    async function submitToGoogleSheet() {
+      readParticipantForm();
+      if (!state.participant.name) {
+        alert("Nama peserta wajib diisi sebelum kirim ke Google Sheet.");
+        return;
+      }
+
+      const evaluation = calculateOverallScore();
+      if (!state.meta.startedAt) state.meta.startedAt = new Date().toISOString();
+      state.meta.finishedAt = new Date().toISOString();
+
+      const localPayload = {
+        title: DATA.title,
+        participant: state.participant,
+        activeSection: state.activeSection,
+        answers: state.answers,
+        meta: state.meta,
+        scoring: {
+          score: evaluation.score,
+          maxScore: evaluation.maxScore,
+          correctCount: evaluation.correctCount
+        }
+      };
+
+      try {
+        const session = JSON.parse(localStorage.getItem("HRRS_SESSION") || "null") || {};
+        const response = await submitAssessmentResult(buildIqPayload({
+          session: {
+            ...session,
+            token: state.participant.code || session.token || "",
+            candidate: {
+              ...(session.candidate || {}),
+              name: state.participant.name || "",
+              position: session?.candidate?.position || "",
+              phone: session?.candidate?.phone || "",
+              gender: session?.candidate?.gender || "",
+              age: session?.candidate?.age || ""
+            }
+          },
+          payload: localPayload
+        }));
+
+        state.meta.submittedAt = new Date().toISOString();
+        state.meta.sync = {
+          status: response?.skipped ? "skipped" : "success",
+          response
+        };
+      } catch (error) {
+        state.meta.sync = {
+          status: "failed",
+          message: error?.message || "Sinkronisasi gagal."
+        };
+      }
+
+      saveState();
     }
 
     function fillParticipantForm() {
@@ -893,6 +982,7 @@
     }
 
     $("saveMetaBtn").addEventListener("click", readParticipantForm);
+    $("submitSheetBtn").addEventListener("click", () => { void submitToGoogleSheet(); });
     $("exportBtn").addEventListener("click", exportJson);
     $("resetBtn").addEventListener("click", () => {
       if (confirm("Reset semua jawaban dan data peserta di browser ini?")) {
@@ -909,6 +999,7 @@
     renderStats();
     renderContent();
     renderExportPreview();
+    renderSyncStatus();
   </script>
   <script>
     (function () {
