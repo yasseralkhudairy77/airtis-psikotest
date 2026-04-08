@@ -12,7 +12,6 @@ form.addEventListener("submit", (e) => {
   const gender = document.getElementById("gender").value;
   const age = Number(document.getElementById("age").value || 0);
   const position = document.getElementById("position").value.trim();
-  const testType = document.getElementById("testType").value;
 
   if(!name) { err.textContent = "Nama wajib diisi."; return; }
   if(phone && !/^0\d{9,14}$/.test(phone)) { err.textContent = "No HP harus format 08xxxxxxxxxx (9-14 digit setelah 0)."; return; }
@@ -22,18 +21,11 @@ form.addEventListener("submit", (e) => {
   Storage.setSession({
     ...s,
     candidate: { name, phone, gender, age, position },
-    selectedTest: testType
+    assessmentFlow: {
+      tests: ["disc", "spm", "kraepelin"],
+      current: "disc"
+    }
   });
 
-  if(testType === "disc"){
-    window.location.href = "test.html?test=disc";
-    return;
-  }
-
-  if(testType === "spm"){
-    window.location.href = "spm/index.html";
-    return;
-  }
-
-  window.location.href = "kraepelin.html";
+  window.location.href = "test.html?test=disc";
 });

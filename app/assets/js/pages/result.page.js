@@ -66,6 +66,17 @@ function renderList(items){
   return `<ul>${items.map(x => `<li>${escapeHtml(x)}</li>`).join("")}</ul>`;
 }
 
+function getNextStep(testId){
+  if(testId === "disc"){
+    return {
+      href: "spm/index.html",
+      button: "Lanjut ke SPM Raven",
+      copy: "Tes berikutnya adalah SPM Raven."
+    };
+  }
+  return null;
+}
+
 function renderSyncBadge(sync){
   if(!sync) return `<div class="small">Status sinkronisasi: belum dicoba.</div>`;
   if(sync.status === "success") return `<div class="success">Status sinkronisasi: berhasil dikirim ke endpoint.</div>`;
@@ -86,6 +97,27 @@ function main(){
   }
 
   document.getElementById("title").textContent = `Hasil ${manifest.name}`;
+
+  const nextStep = getNextStep(testId);
+  if(nextStep){
+    const card = document.getElementById("next-step-card");
+    const copy = document.getElementById("next-step-copy");
+    const btn = document.getElementById("next-step-btn");
+    card.style.display = "block";
+    copy.textContent = nextStep.copy;
+    btn.textContent = nextStep.button;
+    btn.addEventListener("click", () => {
+      const session = Storage.getSession() || {};
+      Storage.setSession({
+        ...session,
+        assessmentFlow: {
+          ...(session.assessmentFlow || {}),
+          current: "spm"
+        }
+      });
+      window.location.href = nextStep.href;
+    });
+  }
 
   const cand = s.candidate || {};
   const dominant = (r.score?.dominant || "D");

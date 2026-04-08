@@ -65,6 +65,7 @@ const ui = {
   numsGrid: el('numsGrid'),
   resultBox: el('resultBox'),
   syncStatus: el('syncStatus'),
+  btnNextTest: el('btnNextTest'),
   btnPrev: el('btnPrev'),
   btnNext: el('btnNext'),
   btnClear: el('btnClear'),
@@ -385,7 +386,24 @@ function wireEvents() {
       saveState();
       renderSyncStatus();
     }
+    if (ui.btnNextTest) {
+      ui.btnNextTest.style.display = 'inline-block';
+    }
   };
+
+  if (ui.btnNextTest) {
+    ui.btnNextTest.onclick = () => {
+      const session = JSON.parse(localStorage.getItem('HRRS_SESSION') || 'null') || {};
+      localStorage.setItem('HRRS_SESSION', JSON.stringify({
+        ...session,
+        assessmentFlow: {
+          ...(session.assessmentFlow || {}),
+          current: 'kraepelin',
+        }
+      }));
+      window.location.href = '../kraepelin.html';
+    };
+  }
 
   ui.btnCopy.onclick = async () => {
     const text = ui.resultBox.value || JSON.stringify(buildPayload(), null, 2);
