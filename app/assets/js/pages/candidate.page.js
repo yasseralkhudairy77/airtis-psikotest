@@ -30,11 +30,6 @@ form.addEventListener("submit", (e) => {
     return;
   }
 
-  if(testType === "iq"){
-    window.location.href = "iq.html";
-    return;
-  }
-
   if(testType === "spm"){
     window.location.href = "spm/index.html";
     return;
