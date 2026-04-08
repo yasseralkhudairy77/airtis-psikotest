@@ -35,5 +35,10 @@ form.addEventListener("submit", (e) => {
     return;
   }
 
+  if(testType === "spm"){
+    window.location.href = "spm/index.html";
+    return;
+  }
+
   window.location.href = "kraepelin.html";
 });

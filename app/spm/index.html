@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AIRTIS Psikotest | SPM Raven</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <div class="title">SPM Raven</div>
+        <div class="sub">
+          Versi modular untuk 60 soal Raven SPM.
+          <br />Klik langsung gambar jawaban di dalam soal. Tombol angka <b>1-8</b> hanya cadangan, panah kiri/kanan untuk navigasi.
+          <br />Klik <b>Selesai</b> untuk menampilkan hasil dan mengirim ke Google Sheet.
+        </div>
+      </div>
+      <div class="pill">Terjawab: <b id="answeredCount">0</b>/<b id="totalCount">0</b></div>
+    </header>
+
+    <div class="grid">
+      <section class="card">
+        <div class="head">
+          <div>
+            <div class="kicker">Soal <b id="qIndexLabel">1</b> dari <b id="qTotalLabel">60</b></div>
+            <div class="qname" id="qTitle">A1</div>
+          </div>
+          <div class="btns">
+            <button id="btnPrev">Prev</button>
+            <button id="btnNext" class="primary">Next</button>
+            <button id="btnZoom" class="accent">Zoom</button>
+          </div>
+        </div>
+
+        <div class="imgWrap">
+          <div class="imgBox">
+            <img id="qImg" alt="Gambar soal SPM" />
+            <div class="hint">Klik gambar jawaban langsung di area soal</div>
+          </div>
+        </div>
+
+        <div class="area">
+          <div class="row">
+            <div class="label">Jawaban dipilih: <b id="selectedLabel">-</b></div>
+            <div class="btns">
+              <button id="btnClear" class="danger">Hapus Jawaban</button>
+            </div>
+          </div>
+          <div class="choices" id="choices"></div>
+        </div>
+      </section>
+
+      <aside class="side">
+        <section class="card">
+          <div class="head">
+            <div>
+              <div class="kicker">Progress</div>
+              <div class="qname">Status pengerjaan</div>
+            </div>
+          </div>
+          <div class="area">
+            <div class="row small">
+              <div>Terjawab: <b id="answeredCount2">0</b></div>
+              <div>Sisa: <b id="remainingCount">0</b></div>
+            </div>
+            <div class="bar"><div id="barFill"></div></div>
+            <div class="small" style="margin-top:10px">
+              Skor dihitung otomatis berdasarkan kunci jawaban 60 soal.
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="head">
+            <div>
+              <div class="kicker">Navigasi</div>
+              <div class="qname">Klik nomor soal</div>
+            </div>
+          </div>
+          <div class="nums">
+            <div class="small">Hijau = sudah dijawab</div>
+            <div class="numsGrid" id="numsGrid"></div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="head">
+            <div>
+              <div class="kicker">Hasil</div>
+              <div class="qname">JSON + Skor</div>
+            </div>
+            <div class="btns">
+              <button id="btnFinish" class="primary">Selesai</button>
+              <button id="btnCopy" class="accent">Copy JSON</button>
+              <button id="btnReset" class="danger">Reset</button>
+            </div>
+          </div>
+          <div class="area">
+            <div class="small" id="syncStatus" style="margin-bottom:10px;">Belum dikirim ke Google Sheet.</div>
+            <textarea id="resultBox" readonly placeholder="Klik Selesai untuk lihat hasil + skor..."></textarea>
+          </div>
+        </section>
+      </aside>
+    </div>
+  </div>
+
+  <div class="modal" id="modal">
+    <div class="modalBox">
+      <div class="modalHead">
+        <div class="t" id="modalTitle">Zoom</div>
+        <button id="btnCloseModal">Tutup</button>
+      </div>
+      <div class="modalBody">
+        <img id="modalImg" alt="Zoom gambar soal" />
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

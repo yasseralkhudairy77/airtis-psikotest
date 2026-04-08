@@ -11,4 +11,5 @@ Buka `app/index.html` menggunakan Live Server di VSCode.
 ## Tes Yang Tersedia
 - DISC
 - IQ / IST
+- SPM Raven
 - Pauli Kraepelin

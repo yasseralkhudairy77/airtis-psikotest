@@ -76,6 +76,20 @@ function buildSummary(testId, result){
     };
   }
 
+  if(testId === "spm"){
+    const score = result?.score || {};
+    const iq = result?.iq_result || {};
+    return {
+      scoreSummary: [
+        `correct=${score.correct ?? 0}`,
+        `wrong=${score.wrong ?? 0}`,
+        `unanswered=${score.unanswered ?? 0}`,
+        `iq=${iq.iq ?? ""}`
+      ].join(" | "),
+      interpretationSummary: iq.classification || ""
+    };
+  }
+
   return {
     scoreSummary: "",
     interpretationSummary: ""
@@ -119,5 +133,35 @@ export function buildKraepelinPayload({ session, payload }){
       version: "1.0.0"
     },
     testId: "kraepelin"
+  });
+}
+
+export function buildSpmPayload({ session, payload }){
+  return buildAssessmentPayload({
+    session: {
+      ...session,
+      assessment: {
+        testId: "spm",
+        startedAt: payload?.started_at || null,
+        finishedAt: payload?.ended_at || null
+      }
+    },
+    result: {
+      meta: {
+        durationSec: payload?.duration_sec ?? "",
+        startedAt: payload?.started_at || null,
+        finishedAt: payload?.ended_at || null
+      },
+      score: payload?.score || {},
+      iq_result: payload?.iq_result || {},
+      answers: payload?.answers || [],
+      raw: payload
+    },
+    manifest: {
+      id: "spm",
+      name: "SPM Raven",
+      version: "1.0.0"
+    },
+    testId: "spm"
   });
 }
