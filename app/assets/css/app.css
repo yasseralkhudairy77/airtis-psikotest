@@ -91,7 +91,7 @@ pre{white-space:pre-wrap;background:#fafbff;border:1px solid #e6e8ef;border-radi
 body.auth-page{
   min-height:100vh;
   background:
-    linear-gradient(180deg,rgba(255,255,255,.12),rgba(209,231,255,.18)),
+    linear-gradient(180deg,rgba(255,255,255,.03),rgba(209,231,255,.08)),
     url("../img/airtis-auth-bg.webp") center center / cover no-repeat fixed;
 }
 .auth-container{
@@ -104,11 +104,11 @@ body.auth-page{
 }
 .auth-card{
   width:min(100%,860px);
-  background:rgba(255,255,255,.95);
-  border:1px solid rgba(255,255,255,.9);
+  background:rgba(255,255,255,.97);
+  border:1px solid rgba(255,255,255,.96);
   box-shadow:0 24px 60px rgba(15,42,79,.22);
-  backdrop-filter:blur(3px);
-  -webkit-backdrop-filter:blur(3px);
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
 }
 .auth-card h1{
   color:#0f2444;
@@ -135,7 +135,7 @@ body.auth-page{
   .disc-three-col,.disc-two-col{grid-template-columns:1fr;}
   body.auth-page{
     background:
-      linear-gradient(180deg,rgba(255,255,255,.1),rgba(209,231,255,.16)),
+      linear-gradient(180deg,rgba(255,255,255,.03),rgba(209,231,255,.08)),
       url("../img/airtis-auth-bg.webp") 18% center / cover no-repeat;
   }
   .auth-container{
