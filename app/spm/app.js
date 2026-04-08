@@ -63,7 +63,6 @@ const ui = {
   barFill: el('barFill'),
   choices: el('choices'),
   numsGrid: el('numsGrid'),
-  resultBox: el('resultBox'),
   syncStatus: el('syncStatus'),
   btnNextTest: el('btnNextTest'),
   btnPrev: el('btnPrev'),
@@ -374,7 +373,6 @@ function wireEvents() {
 
   ui.btnFinish.onclick = async () => {
     const payload = buildPayload();
-    ui.resultBox.value = JSON.stringify(payload, null, 2);
     try {
       await submitToGoogleSheet(payload);
     } catch (error) {
@@ -393,25 +391,17 @@ function wireEvents() {
 
   if (ui.btnNextTest) {
     ui.btnNextTest.onclick = () => {
-      const session = JSON.parse(localStorage.getItem('HRRS_SESSION') || 'null') || {};
-      localStorage.setItem('HRRS_SESSION', JSON.stringify({
-        ...session,
-        assessmentFlow: {
-          ...(session.assessmentFlow || {}),
-          current: 'kraepelin',
-        }
-      }));
-      window.location.href = '../kraepelin.html';
+      window.location.href = '../next-step.html?done=spm';
     };
   }
 
   ui.btnCopy.onclick = async () => {
-    const text = ui.resultBox.value || JSON.stringify(buildPayload(), null, 2);
+    const text = JSON.stringify(buildPayload(), null, 2);
     try {
       await navigator.clipboard.writeText(text);
       ui.btnCopy.textContent = 'Copied OK';
       setTimeout(() => {
-        ui.btnCopy.textContent = 'Copy JSON';
+        ui.btnCopy.textContent = 'Copy Data';
       }, 900);
     } catch {
       alert('Gagal copy. Blok teks lalu Ctrl+C.');

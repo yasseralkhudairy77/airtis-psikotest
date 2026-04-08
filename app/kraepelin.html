@@ -712,7 +712,7 @@ import { buildKraepelinPayload } from "./assets/js/core/payloads.js";
 
     try {
       await sendToGoogleSheet(reason);
-      setFeedback(reason + ". Hasil juga berhasil dikirim ke Google Sheet.", "good");
+      window.location.href = "next-step.html?done=kraepelin";
     } catch (error) {
       setFeedback(reason + ". Tes selesai, tapi kirim ke Google Sheet gagal.", "bad");
       console.warn("Gagal kirim hasil Kraepelin", error);

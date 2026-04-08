@@ -74,7 +74,7 @@ async function main(){
         });
       }
 
-      window.location.href = manifest.routes.result;
+      window.location.href = `next-step.html?done=${encodeURIComponent(testId)}`;
     }catch(err){
       errorBox.textContent = err?.message || "Terjadi kesalahan.";
     }
