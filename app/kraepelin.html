@@ -263,14 +263,6 @@
       background:#f8fafc;
     }
 
-    .rowActions{
-      width:min(640px,100%);
-      margin-top:6px;
-      display:grid;
-      grid-template-columns:repeat(4,minmax(0,1fr));
-      gap:10px;
-    }
-
     .btn{
       height:42px;
       border:1px solid #cdd2e6;
@@ -290,154 +282,6 @@
     .btn.bad{background:#fff;border-color:#fecaca;color:var(--bad)}
     .btn.ghost{background:#ffffff;color:#334155}
 
-    .settings{
-      width:100%;
-      display:grid;
-      grid-template-columns:repeat(2,minmax(0,1fr));
-      gap:10px;
-      margin-top:6px;
-    }
-
-    .field{
-      background:var(--surface-strong);
-      border:1px solid var(--stroke-soft);
-      border-radius:var(--radius-md);
-      padding:10px 12px;
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-    }
-
-    .field label{
-      font-size:12px;
-      color:var(--muted);
-      font-weight:560;
-    }
-
-    .field input{
-      border:1px solid #d6d9e6;
-      outline:none;
-      background:#fff;
-      border-radius:10px;
-      padding:8px 10px;
-      color:var(--text);
-      font-size:15px;
-      font-weight:560;
-      min-height:24px;
-    }
-
-    .field input::placeholder{color:#94a3b8}
-
-    .footerNote{
-      width:100%;
-      text-align:center;
-      margin-top:4px;
-      font-size:12px;
-      color:var(--muted);
-    }
-
-    .minuteCard{
-      width:100%;
-      background:var(--surface-strong);
-      border:1px solid var(--stroke-soft);
-      border-radius:var(--radius-md);
-      padding:12px;
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-    }
-
-    .minuteHead{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:8px;
-      font-size:13px;
-      font-weight:620;
-      color:#334155;
-      flex-wrap:wrap;
-    }
-
-    .minuteMeta{
-      font-size:12px;
-      font-weight:560;
-      color:var(--muted);
-    }
-
-    .minuteLegend{
-      display:flex;
-      gap:12px;
-      font-size:11px;
-      color:var(--muted);
-      font-weight:560;
-    }
-
-    .legendDot{
-      display:inline-block;
-      width:8px;
-      height:8px;
-      border-radius:99px;
-      margin-right:4px;
-      vertical-align:middle;
-    }
-
-    .minuteChart{
-      width:100%;
-      min-height:170px;
-      display:grid;
-      align-items:end;
-      gap:5px;
-      overflow-x:auto;
-      padding-bottom:2px;
-    }
-
-    .minuteCol{
-      min-width:14px;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      gap:4px;
-    }
-
-    .minuteBar{
-      width:100%;
-      height:128px;
-      background:#f4f6fb;
-      border-radius:8px;
-      position:relative;
-      overflow:hidden;
-      border:1px solid var(--stroke);
-    }
-
-    .minuteGood,
-    .minuteBad{
-      position:absolute;
-      left:0;
-      width:100%;
-      transition:height .2s ease;
-    }
-
-    .minuteGood{
-      bottom:0;
-      background:#22c55e;
-    }
-
-    .minuteBad{
-      background:#ef4444;
-    }
-
-    .minuteCol.active .minuteBar{
-      outline:2px solid rgba(26,115,232,.35);
-      outline-offset:1px;
-    }
-
-    .minuteLabel{
-      font-size:10px;
-      color:#94a3b8;
-      line-height:1;
-      min-height:10px;
-    }
-
     @keyframes rise{
       from{opacity:0; transform:translateY(8px)}
       to{opacity:1; transform:translateY(0)}
@@ -446,8 +290,6 @@
     @media (max-width:760px){
       body{padding:14px}
       .topbar{grid-template-columns:1fr}
-      .rowActions{grid-template-columns:repeat(2,minmax(0,1fr))}
-      .settings{grid-template-columns:1fr}
       .onboardingGrid{grid-template-columns:1fr}
       .col{font-size:78px}
       .nums{min-height:214px}
@@ -486,7 +328,7 @@
               <h2 class="onboardingTitle">Panduan Tes Pauli Kraepelin</h2>
               <p class="onboardingText">Tes ini mengukur ketelitian, konsistensi, kecepatan kerja, dan daya tahan fokus. Tugas Anda sangat sederhana: jumlahkan dua angka yang tampil, lalu masukkan hanya angka satuannya.</p>
             </div>
-            <button class="btn ghost" id="hideGuideBtn" type="button">Sembunyikan</button>
+            <button class="btn good" id="beginTestBtn" type="button">Saya Mengerti, Mulai Tes</button>
           </div>
 
           <div class="onboardingGrid">
@@ -515,7 +357,7 @@
             </div>
           </div>
 
-          <div class="onboardingText">Kerjakan terus tanpa terlalu lama berpikir. Jika salah, lanjut saja ke angka berikutnya. Saat Anda menekan <b>Mulai</b>, tes akan berjalan selama 30 menit.</div>
+          <div class="onboardingText">Kerjakan terus tanpa terlalu lama berpikir. Jika salah, lanjut saja ke angka berikutnya. Setelah tes dimulai, kandidat harus menyelesaikan seluruh tes sampai selesai.</div>
         </div>
 
         <div class="nums">
@@ -529,48 +371,6 @@
         <div class="feedback" id="feedback"></div>
 
         <div class="grid" id="keypad"></div>
-
-        <div class="rowActions">
-          <button class="btn good" id="startBtn">Mulai</button>
-          <button class="btn ghost" id="pauseBtn" disabled>Pause</button>
-          <button class="btn bad" id="stopBtn" disabled>Selesai</button>
-          <button class="btn ghost" id="csvBtn" disabled>Download CSV</button>
-        </div>
-
-        <div class="settings">
-          <div class="field">
-            <label>Durasi total (detik) - fixed</label>
-            <input id="totalDur" type="number" value="1800" readonly>
-          </div>
-          <div class="field">
-            <label>Durasi per kolom (detik) - fixed</label>
-            <input id="colDur" type="number" value="60" readonly>
-          </div>
-          <div class="field">
-            <label>Seed (opsional, untuk konsisten)</label>
-            <input id="seed" type="text" placeholder="contoh: session123">
-          </div>
-          <div class="field">
-            <label>Nama peserta (opsional)</label>
-            <input id="participant" type="text" placeholder="Nama">
-          </div>
-        </div>
-
-        <div class="minuteCard">
-          <div class="minuteHead">
-            <span>Grafik Kinerja Per Menit</span>
-            <span class="minuteMeta" id="minuteMeta">Menit 1/30</span>
-          </div>
-          <div class="minuteLegend">
-            <span><i class="legendDot" style="background:#22c55e"></i>Benar</span>
-            <span><i class="legendDot" style="background:#ef4444"></i>Salah</span>
-          </div>
-          <div class="minuteChart" id="minuteChart"></div>
-        </div>
-
-        <div class="footerNote">
-          Input hanya angka satuan. Keyboard: 0-9, Backspace, Space (pause).
-        </div>
       </div>
     </div>
   </div>
@@ -611,37 +411,24 @@ import { buildKraepelinPayload } from "./assets/js/core/payloads.js";
   const colLeftEl = el("colLeft");
   const totalLeftEl = el("totalLeft");
   const feedbackEl = el("feedback");
-
-  const startBtn = el("startBtn");
-  const pauseBtn = el("pauseBtn");
-  const stopBtn = el("stopBtn");
-  const csvBtn = el("csvBtn");
+  const beginTestBtn = el("beginTestBtn");
   const onboardingBox = el("onboardingBox");
-  const hideGuideBtn = el("hideGuideBtn");
-
-  const totalDurInput = el("totalDur");
-  const colDurInput = el("colDur");
-  const seedInput = el("seed");
-  const participantInput = el("participant");
-  const minuteChartEl = el("minuteChart");
-  const minuteMetaEl = el("minuteMeta");
   let startedAtIso = null;
 
   const keypad = el("keypad");
   const FIXED_TOTAL_SECONDS = 1800;
   const FIXED_COL_SECONDS = 60;
 
-  const keys = ["1","2","3","4","5","6","7","8","9","DEL","0","START"];
+  const keys = ["1","2","3","4","5","6","7","8","9","0"];
   keys.forEach((k) => {
     const btn = document.createElement("button");
-    btn.className = "key" + (k === "DEL" || k === "START" ? " secondary" : "");
+    btn.className = "key";
     btn.textContent = k;
     btn.addEventListener("click", () => onKey(k));
     keypad.appendChild(btn);
   });
 
   let running = false;
-  let paused = false;
 
   let score = 0;
   let wrong = 0;
@@ -658,7 +445,6 @@ import { buildKraepelinPayload } from "./assets/js/core/payloads.js";
 
   let lastShownAt = 0;
   let attempts = [];
-  let minuteStats = [];
 
   function setFeedback(text, kind = "") {
     feedbackEl.textContent = text || "";
@@ -695,71 +481,17 @@ import { buildKraepelinPayload } from "./assets/js/core/payloads.js";
     totalLeftEl.textContent = totalLeft;
   }
 
-  function currentMinuteIndex() {
-    const elapsed = Math.max(0, FIXED_TOTAL_SECONDS - totalLeft);
-    return Math.min(minuteStats.length - 1, Math.floor(elapsed / 60));
-  }
-
-  function initMinuteStats() {
-    const totalMinutes = Math.ceil(FIXED_TOTAL_SECONDS / 60);
-    minuteStats = Array.from({ length: totalMinutes }, (_, i) => ({
-      minute: i + 1,
-      correct: 0,
-      wrong: 0,
-      total: 0
-    }));
-  }
-
-  function renderMinuteChart() {
-    if (!minuteStats.length) return;
-
-    const maxTotal = Math.max(1, ...minuteStats.map((m) => m.total));
-    const activeIdx = currentMinuteIndex();
-
-    minuteChartEl.style.gridTemplateColumns = "repeat(" + minuteStats.length + ", minmax(14px, 1fr))";
-    minuteChartEl.innerHTML = minuteStats.map((m, idx) => {
-      const total = m.total || 0;
-      const goodHeight = total ? Math.round((m.correct / maxTotal) * 100) : 0;
-      const badHeight = total ? Math.round((m.wrong / maxTotal) * 100) : 0;
-      const badBottom = goodHeight;
-      const activeClass = (running && !paused && idx === activeIdx) ? " active" : "";
-      const label = (m.minute === 1 || m.minute % 5 === 0 || m.minute === minuteStats.length) ? String(m.minute) : "";
-
-      return (
-        "<div class=\"minuteCol" + activeClass + "\">" +
-          "<div class=\"minuteBar\">" +
-            "<div class=\"minuteGood\" style=\"height:" + goodHeight + "%\"></div>" +
-            "<div class=\"minuteBad\" style=\"height:" + badHeight + "%;bottom:" + badBottom + "%\"></div>" +
-          "</div>" +
-          "<div class=\"minuteLabel\">" + label + "</div>" +
-        "</div>"
-      );
-    }).join("");
-
-    const active = minuteStats[activeIdx] || { minute: 1, correct: 0, wrong: 0 };
-    minuteMetaEl.textContent = "Menit " + active.minute + "/" + minuteStats.length + " | Benar " + active.correct + " | Salah " + active.wrong;
-  }
-
-  function enableControls() {
-    startBtn.disabled = running && !paused;
-    pauseBtn.disabled = !running;
-    stopBtn.disabled = !running;
-    csvBtn.disabled = attempts.length === 0;
-    pauseBtn.textContent = paused ? "Lanjut" : "Pause";
-  }
-
   function start() {
+    if (running) return;
     if (onboardingBox) onboardingBox.style.display = "none";
     score = 0;
     wrong = 0;
     colIndex = 1;
-
-    totalDurInput.value = FIXED_TOTAL_SECONDS;
-    colDurInput.value = FIXED_COL_SECONDS;
     totalLeft = FIXED_TOTAL_SECONDS;
     colLeft = FIXED_COL_SECONDS;
 
-    const seedStr = (seedInput.value || "").trim();
+    const session = JSON.parse(localStorage.getItem("HRRS_SESSION") || "null") || {};
+    const seedStr = (session.token || "").trim();
     if (seedStr) {
       const seedFn = xmur3(seedStr);
       rng = mulberry32(seedFn());
@@ -774,17 +506,13 @@ import { buildKraepelinPayload } from "./assets/js/core/payloads.js";
     lastShownAt = performance.now();
 
     attempts = [];
-    initMinuteStats();
     running = true;
-    paused = false;
     startedAtIso = new Date().toISOString();
 
     setFeedback("Tes dimulai.", "good");
-    enableControls();
 
     tick();
     timer = setInterval(tick, 1000);
-    renderMinuteChart();
   }
 
   async function sendToGoogleSheet(reason = "Selesai") {
@@ -802,20 +530,18 @@ import { buildKraepelinPayload } from "./assets/js/core/payloads.js";
         totalAttempts: attempts.length,
         lastColumn: colIndex
       },
-      participant: (participantInput.value || "").trim(),
-      seed: (seedInput.value || "").trim(),
-      attempts,
-      minuteStats
+      participant: (session.candidate?.name || "").trim(),
+      seed: (session.token || "").trim(),
+      attempts
     };
 
-    const session = JSON.parse(localStorage.getItem("HRRS_SESSION") || "null") || {};
     return submitAssessmentResult(buildKraepelinPayload({
       session: {
         ...session,
-        token: session.token || (seedInput.value || "").trim(),
+        token: session.token || "",
         candidate: {
           ...(session.candidate || {}),
-          name: (participantInput.value || "").trim()
+          name: (session.candidate?.name || "").trim()
         }
       },
       payload
@@ -824,14 +550,10 @@ import { buildKraepelinPayload } from "./assets/js/core/payloads.js";
 
   async function stop(reason = "Selesai") {
     running = false;
-    paused = false;
     if (timer) clearInterval(timer);
     timer = null;
 
     setFeedback(reason + ". Jawaban benar: " + score + ", salah: " + wrong + ".", "");
-    renderMinuteChart();
-    enableControls();
-    csvBtn.disabled = attempts.length === 0;
 
     try {
       await sendToGoogleSheet(reason);
@@ -842,16 +564,8 @@ import { buildKraepelinPayload } from "./assets/js/core/payloads.js";
     }
   }
 
-  function togglePause() {
-    if (!running) return;
-    paused = !paused;
-    setFeedback(paused ? "Pause." : "Lanjut.", paused ? "" : "good");
-    renderMinuteChart();
-    enableControls();
-  }
-
   function tick() {
-    if (!running || paused) return;
+    if (!running) return;
 
     totalLeft -= 1;
     colLeft -= 1;
@@ -869,28 +583,18 @@ import { buildKraepelinPayload } from "./assets/js/core/payloads.js";
     }
 
     updateHUD();
-    renderMinuteChart();
   }
 
   function logAttempt(userInput, correct) {
     const now = performance.now();
     const rt = Math.max(0, Math.round(now - lastShownAt));
     const elapsedSec = Math.max(0, FIXED_TOTAL_SECONDS - totalLeft);
-    const minuteIndex = Math.min(minuteStats.length - 1, Math.floor(elapsedSec / 60));
-    const minuteValue = minuteIndex + 1;
-
-    if (minuteStats[minuteIndex]) {
-      minuteStats[minuteIndex].total += 1;
-      if (correct) minuteStats[minuteIndex].correct += 1;
-      else minuteStats[minuteIndex].wrong += 1;
-    }
-
     attempts.push({
       ts_iso: new Date().toISOString(),
-      participant: (participantInput.value || "").trim(),
-      seed: (seedInput.value || "").trim(),
+      participant: JSON.parse(localStorage.getItem("HRRS_SESSION") || "null")?.candidate?.name || "",
+      seed: JSON.parse(localStorage.getItem("HRRS_SESSION") || "null")?.token || "",
       col: colIndex,
-      minute: minuteValue,
+      minute: Math.floor(elapsedSec / 60) + 1,
       elapsed_sec: elapsedSec,
       a: curA,
       b: curB,
@@ -902,7 +606,7 @@ import { buildKraepelinPayload } from "./assets/js/core/payloads.js";
   }
 
   function onAnswer(digit) {
-    if (!running || paused) return;
+    if (!running) return;
 
     const expected = currentAnswer();
     const correct = digit === expected;
@@ -918,85 +622,21 @@ import { buildKraepelinPayload } from "./assets/js/core/payloads.js";
 
     nextPair();
     updateHUD();
-    renderMinuteChart();
-    csvBtn.disabled = attempts.length === 0;
   }
 
   function onKey(k) {
-    if (k === "DEL") {
-      setFeedback("Backspace tidak dipakai untuk mode 1 digit.", "");
-      return;
-    }
-
-    if (k === "START") {
-      if (!running) start();
-      else setFeedback("Tes sedang berjalan.", "");
-      return;
-    }
-
     if (/^\d$/.test(k)) onAnswer(parseInt(k, 10));
   }
-
-  function toCSV(rows) {
-    if (!rows.length) return "";
-
-    const headers = Object.keys(rows[0]);
-    const esc = (val) => {
-      const s = String(val ?? "");
-      if (/[",\n]/.test(s)) return '"' + s.replaceAll('"', '""') + '"';
-      return s;
-    };
-
-    const lines = [];
-    lines.push(headers.map(esc).join(","));
-    for (const row of rows) {
-      lines.push(headers.map((h) => esc(row[h])).join(","));
-    }
-    return lines.join("\n");
-  }
-
-  function downloadCSV() {
-    const csv = toCSV(attempts);
-    const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-
-    const a = document.createElement("a");
-    const name = (participantInput.value || "peserta").trim().replace(/\s+/g, "_");
-    a.href = url;
-    a.download = "kraepelin_" + (name || "hasil") + "_" + Date.now() + ".csv";
-
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    URL.revokeObjectURL(url);
-  }
-
-  startBtn.addEventListener("click", start);
-  pauseBtn.addEventListener("click", togglePause);
-  stopBtn.addEventListener("click", () => { void stop("Tes dihentikan"); });
-  csvBtn.addEventListener("click", downloadCSV);
-  hideGuideBtn?.addEventListener("click", () => {
-    onboardingBox.style.display = "none";
-  });
+  beginTestBtn?.addEventListener("click", start);
 
   document.addEventListener("keydown", (e) => {
     if (e.key >= "0" && e.key <= "9") onAnswer(parseInt(e.key, 10));
-    else if (e.key === "Backspace") onKey("DEL");
-    else if (e.key === " ") {
-      e.preventDefault();
-      togglePause();
-    }
   });
 
-  totalDurInput.value = FIXED_TOTAL_SECONDS;
-  colDurInput.value = FIXED_COL_SECONDS;
-  initMinuteStats();
-  totalLeftEl.textContent = totalDurInput.value;
-  colLeftEl.textContent = colDurInput.value;
+  totalLeftEl.textContent = FIXED_TOTAL_SECONDS;
+  colLeftEl.textContent = FIXED_COL_SECONDS;
   updateHUD();
-  renderMinuteChart();
-  setFeedback("Durasi fixed 30 menit. Klik Mulai untuk mulai tes.", "");
-  enableControls();
+  setFeedback("Baca panduan lalu tekan tombol mulai untuk memulai tes.", "");
 })();
 </script>
   <script>
@@ -1004,13 +644,6 @@ import { buildKraepelinPayload } from "./assets/js/core/payloads.js";
       try {
         const session = JSON.parse(localStorage.getItem("HRRS_SESSION") || "null");
         if (!session || !session.candidate) return;
-
-        const candidate = session.candidate || {};
-        const participantEl = document.getElementById("participant");
-        const seedEl = document.getElementById("seed");
-
-        if (participantEl && !participantEl.value) participantEl.value = candidate.name || "";
-        if (seedEl && !seedEl.value) seedEl.value = session.token || "";
       } catch (error) {
         console.warn("Gagal sinkron data kandidat ke Kraepelin", error);
       }
