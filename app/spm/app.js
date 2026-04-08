@@ -69,7 +69,6 @@ const ui = {
   btnNext: el('btnNext'),
   btnClear: el('btnClear'),
   btnFinish: el('btnFinish'),
-  btnCopy: el('btnCopy'),
   btnReset: el('btnReset'),
   modal: el('modal'),
   btnZoom: el('btnZoom'),
@@ -394,19 +393,6 @@ function wireEvents() {
       window.location.href = '../next-step.html?done=spm';
     };
   }
-
-  ui.btnCopy.onclick = async () => {
-    const text = JSON.stringify(buildPayload(), null, 2);
-    try {
-      await navigator.clipboard.writeText(text);
-      ui.btnCopy.textContent = 'Copied OK';
-      setTimeout(() => {
-        ui.btnCopy.textContent = 'Copy Data';
-      }, 900);
-    } catch {
-      alert('Gagal copy. Blok teks lalu Ctrl+C.');
-    }
-  };
 
   ui.btnReset.onclick = () => {
     if (!confirm('Reset semua jawaban?')) return;
