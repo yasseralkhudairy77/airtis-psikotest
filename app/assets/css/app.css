@@ -88,6 +88,36 @@ pre{white-space:pre-wrap;background:#fafbff;border:1px solid #e6e8ef;border-radi
 .disc-three-col ul,.disc-two-col ul{margin:0;padding:10px 18px 12px;}
 .disc-three-col li,.disc-two-col li{margin:0 0 6px;line-height:1.35;}
 
+body.auth-page{
+  min-height:100vh;
+  background:
+    linear-gradient(180deg,rgba(245,250,255,.52),rgba(230,241,255,.84)),
+    url("../img/airtis-auth-bg.webp") center center / cover no-repeat fixed;
+}
+.auth-container{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding-top:48px;
+  padding-bottom:48px;
+}
+.auth-card{
+  width:min(100%,860px);
+  background:rgba(255,255,255,.9);
+  border:1px solid rgba(255,255,255,.76);
+  box-shadow:0 18px 48px rgba(15,42,79,.16);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+}
+.auth-card h1{
+  color:#0f2444;
+}
+.auth-card .small{
+  color:#304763;
+  line-height:1.55;
+}
+
 @media (max-width:720px){
   .container{padding:16px;}
   .row2{grid-template-columns:1fr;}
@@ -103,4 +133,19 @@ pre{white-space:pre-wrap;background:#fafbff;border:1px solid #e6e8ef;border-radi
   .disc-big-letter{height:88px;width:88px;font-size:56px;}
   .disc-graph-grid{grid-template-columns:1fr;}
   .disc-three-col,.disc-two-col{grid-template-columns:1fr;}
+  body.auth-page{
+    background:
+      linear-gradient(180deg,rgba(245,250,255,.7),rgba(230,241,255,.9)),
+      url("../img/airtis-auth-bg.webp") 18% center / cover no-repeat;
+  }
+  .auth-container{
+    align-items:flex-start;
+    padding-top:28px;
+    padding-bottom:28px;
+  }
+  .auth-card{
+    background:rgba(255,255,255,.94);
+    backdrop-filter:none;
+    -webkit-backdrop-filter:none;
+  }
 }
