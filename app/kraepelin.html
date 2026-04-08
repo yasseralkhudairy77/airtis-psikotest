@@ -100,6 +100,87 @@
       align-items:center;
     }
 
+    .onboarding{
+      width:100%;
+      background:linear-gradient(180deg,#f8fbff,#f2f7ff);
+      border:1px solid #d9e6fb;
+      border-radius:16px;
+      padding:16px;
+      display:grid;
+      gap:12px;
+    }
+
+    .onboardingHead{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      align-items:flex-start;
+      flex-wrap:wrap;
+    }
+
+    .onboardingTitle{
+      font-size:18px;
+      font-weight:700;
+      color:#0f172a;
+      margin:0;
+    }
+
+    .onboardingText{
+      font-size:13px;
+      color:#475569;
+      line-height:1.55;
+      margin:4px 0 0;
+    }
+
+    .onboardingGrid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:10px;
+    }
+
+    .onboardingCard{
+      background:#fff;
+      border:1px solid #dbe6f5;
+      border-radius:14px;
+      padding:12px;
+    }
+
+    .onboardingCard b{
+      display:block;
+      font-size:13px;
+      margin-bottom:6px;
+      color:#0f172a;
+    }
+
+    .onboardingCard div{
+      font-size:12px;
+      color:#64748b;
+      line-height:1.5;
+    }
+
+    .exampleBox{
+      width:100%;
+      background:#fff;
+      border:1px dashed #bfd3f2;
+      border-radius:14px;
+      padding:12px 14px;
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+
+    .exampleCalc{
+      font-size:14px;
+      color:#0f172a;
+      line-height:1.5;
+    }
+
+    .exampleCalc b{
+      font-size:18px;
+    }
+
     .nums{
       margin-top:6px;
       background:var(--surface-strong);
@@ -367,6 +448,7 @@
       .topbar{grid-template-columns:1fr}
       .rowActions{grid-template-columns:repeat(2,minmax(0,1fr))}
       .settings{grid-template-columns:1fr}
+      .onboardingGrid{grid-template-columns:1fr}
       .col{font-size:78px}
       .nums{min-height:214px}
       button.key{height:62px; font-size:26px}
@@ -398,6 +480,44 @@
 
     <div class="main">
       <div class="questionWrap">
+        <div class="onboarding" id="onboardingBox">
+          <div class="onboardingHead">
+            <div>
+              <h2 class="onboardingTitle">Panduan Tes Pauli Kraepelin</h2>
+              <p class="onboardingText">Tes ini mengukur ketelitian, konsistensi, kecepatan kerja, dan daya tahan fokus. Tugas Anda sangat sederhana: jumlahkan dua angka yang tampil, lalu masukkan hanya angka satuannya.</p>
+            </div>
+            <button class="btn ghost" id="hideGuideBtn" type="button">Sembunyikan</button>
+          </div>
+
+          <div class="onboardingGrid">
+            <div class="onboardingCard">
+              <b>1. Lihat dua angka</b>
+              <div>Fokus pada dua angka yang tampil vertikal di tengah layar.</div>
+            </div>
+            <div class="onboardingCard">
+              <b>2. Jumlahkan cepat</b>
+              <div>Tambahkan kedua angka, lalu ambil angka paling belakang saja.</div>
+            </div>
+            <div class="onboardingCard">
+              <b>3. Tekan jawabannya</b>
+              <div>Pilih angka di keypad atau tekan tombol angka pada keyboard.</div>
+            </div>
+          </div>
+
+          <div class="exampleBox">
+            <div class="exampleCalc">
+              Contoh: <b>7 + 8 = 15</b><br />
+              Jawaban yang dimasukkan hanya <b>5</b>.
+            </div>
+            <div class="exampleCalc">
+              Contoh: <b>4 + 3 = 7</b><br />
+              Jawaban yang dimasukkan adalah <b>7</b>.
+            </div>
+          </div>
+
+          <div class="onboardingText">Kerjakan terus tanpa terlalu lama berpikir. Jika salah, lanjut saja ke angka berikutnya. Saat Anda menekan <b>Mulai</b>, tes akan berjalan selama 30 menit.</div>
+        </div>
+
         <div class="nums">
           <div class="col">
             <div id="a">6</div>
@@ -496,6 +616,8 @@ import { buildKraepelinPayload } from "./assets/js/core/payloads.js";
   const pauseBtn = el("pauseBtn");
   const stopBtn = el("stopBtn");
   const csvBtn = el("csvBtn");
+  const onboardingBox = el("onboardingBox");
+  const hideGuideBtn = el("hideGuideBtn");
 
   const totalDurInput = el("totalDur");
   const colDurInput = el("colDur");
@@ -627,6 +749,7 @@ import { buildKraepelinPayload } from "./assets/js/core/payloads.js";
   }
 
   function start() {
+    if (onboardingBox) onboardingBox.style.display = "none";
     score = 0;
     wrong = 0;
     colIndex = 1;
@@ -852,6 +975,9 @@ import { buildKraepelinPayload } from "./assets/js/core/payloads.js";
   pauseBtn.addEventListener("click", togglePause);
   stopBtn.addEventListener("click", () => { void stop("Tes dihentikan"); });
   csvBtn.addEventListener("click", downloadCSV);
+  hideGuideBtn?.addEventListener("click", () => {
+    onboardingBox.style.display = "none";
+  });
 
   document.addEventListener("keydown", (e) => {
     if (e.key >= "0" && e.key <= "9") onAnswer(parseInt(e.key, 10));
